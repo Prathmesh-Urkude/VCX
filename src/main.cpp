@@ -2,6 +2,7 @@
 #include "commands/init.h"
 #include "commands/add.h"
 #include "commands/commit.h"
+#include "commands/hash-object.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -18,6 +19,9 @@ int main(int argc, char* argv[]){
     }
     else if("commit" == string(argv[1])){
         commitCommand(argc, argv);
+    }
+    else if("hash-object" == string(argv[1])){
+        hashObjectCommand(argc, argv);
     }
     else{
         cerr << "Unknown command: " << argv[1] << endl;
