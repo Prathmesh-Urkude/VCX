@@ -3,6 +3,7 @@
 #include "commands/add.h"
 #include "commands/commit.h"
 #include "commands/hash-object.h"
+#include "commands/cat-file.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -22,6 +23,9 @@ int main(int argc, char* argv[]){
     }
     else if("hash-object" == string(argv[1])){
         hashObjectCommand(argc, argv);
+    }
+    else if("cat-file" == string(argv[1])){
+        catFileCommand(argc, argv);
     }
     else{
         cerr << "Unknown command: " << argv[1] << endl;

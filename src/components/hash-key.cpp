@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 #include<openssl/sha.h> //compile with "-lcrypto"
 #include "file-handling.h"
+#include "object-db.h"
 #include "hash-key.h"
 using namespace std;
 
@@ -26,7 +27,9 @@ string sha256(string& data){
 
 string getPayload(string type, string& content){
     if("blob" == type || "commit" == type){
-        string payload = type + " " + to_string(content.size()) + "\0" + content;
+        string payload = type + " " + to_string(content.size());
+        payload.push_back('\0');
+        payload += content;
         return payload;
     }
     else if("tree" == type){
@@ -36,7 +39,7 @@ string getPayload(string type, string& content){
 }
 
 string HashKey(string file, bool write){
-    if(validFilePath(string(file))){
+    if(validFilePath(file)){
         try{
             string content = readFile(string(file));
             string payload = getPayload("blob", content);
@@ -58,4 +61,13 @@ string HashKey(string file, bool write){
         cerr << "Invalid file\n";
     }
     return "";
+}
+
+bool isValidHash(const string& hash){
+    if(hash.length() != 64) return false;
+
+    for(char c : hash){
+        if(!isxdigit(static_cast<unsigned char>(c))) return false;
+    }
+    return true;
 }

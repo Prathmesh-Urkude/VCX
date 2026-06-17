@@ -58,7 +58,7 @@ string decompressData(const string& input) {
     return output;
 }
 
-bool validFilePath(string filePath){
+bool validFilePath(const string& filePath){
     path p(filePath);
     return exists(p) && is_regular_file(p);
 }
@@ -71,21 +71,4 @@ string readFile(const string& filePath) {
     ostringstream buffer;
     buffer << file.rdbuf();
     return buffer.str();
-}
-
-void createObject(string& shaKey, string& payload){
-    string dir = ".vcx/objects/" + shaKey.substr(0, 2);
-    create_directories(dir);
-
-    string compressedPayload = compressData(payload);
-
-    string filePath = dir + "/" + shaKey.substr(2);
-
-    if(exists(filePath)) return;
-
-    ofstream objectFile(filePath, ios::binary);
-    if (!objectFile) throw runtime_error("Failed to create object file");
-
-    objectFile.write(compressedPayload.data(), compressedPayload.size());
-    objectFile.close();
 }
