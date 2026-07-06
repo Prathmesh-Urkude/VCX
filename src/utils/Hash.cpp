@@ -1,11 +1,11 @@
 #include<bits/stdc++.h>
-#include<openssl/sha.h> //compile with "-lcrypto"
-#include "file-handling.h"
-#include "object-db.h"
-#include "hash-key.h"
 using namespace std;
+#include "Hash.h"
+#include "FileUtils.h"
+#include<openssl/sha.h> //compile with "-lcrypto"
+// #include "../components/object-db.h"
 
-string sha256(string& data){
+string Hash::sha256(const string& data){
     unsigned char hash[SHA256_DIGEST_LENGTH];
 
     SHA256(
@@ -25,26 +25,13 @@ string sha256(string& data){
     return oss.str();
 }
 
-string getPayload(string type, string& content){
-    if("blob" == type || "commit" == type){
-        string payload = type + " " + to_string(content.size());
-        payload.push_back('\0');
-        payload += content;
-        return payload;
-    }
-    else if("tree" == type){
-        return ""; //payload for tree Object
-    }
-    return "";
-}
-
-string HashKey(string file, bool write){
-    if(validFilePath(file)){
+string Hash::HashKey(string file, bool write){
+    if(FileUtils::validPath(file)){
         try{
-            string content = readFile(string(file));
+            string content = FileUtils::readFile(string(file));
             string payload = getPayload("blob", content);
-            string shaKey = sha256(payload);
-            
+            string shaKey = Hash::sha256(payload);
+
             if(shaKey.empty()){
                 throw runtime_error("Failed to generate hash key");
             }
@@ -63,11 +50,31 @@ string HashKey(string file, bool write){
     return "";
 }
 
-bool isValidHash(const string& hash){
+bool Hash::isValid(const string& hash){
     if(hash.length() != 64) return false;
 
     for(char c : hash){
         if(!isxdigit(static_cast<unsigned char>(c))) return false;
     }
     return true;
+}
+
+string hexToBytes(const std::string& hex){
+    if(hex.length() % 2 != 0) throw invalid_argument("Hex string must have an even length");
+
+    string res;
+    res.reserve(hex.length() / 2);
+    for (size_t i = 0; i < hex.size(); i += 2) {
+        unsigned int value = std::stoul(hex.substr(i, 2), nullptr, 16);
+        res.push_back(static_cast<char>(value));
+    }
+    return res;
+}
+
+string bytesToHex(const std::string& bytes){
+    ostringstream ss;
+    for (char c : bytes) {
+        ss << hex << setw(2) << setfill('0') << static_cast<int>(static_cast<unsigned char>(c));
+    }
+    return ss.str();
 }
