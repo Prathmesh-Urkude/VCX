@@ -1,3 +1,9 @@
 #pragma once
 
-void initCommand();
+#include "commands.h"
+using namespace std;
+
+class InitCommand : public Commands {
+public:
+    int execute(const vector<string>& args) override;
+};

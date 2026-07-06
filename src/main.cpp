@@ -4,6 +4,7 @@
 #include "commands/commit.h"
 #include "commands/hash-object.h"
 #include "commands/cat-file.h"
+#include "commands/commands.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -12,25 +13,21 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    if("init" == string(argv[1])){
-        initCommand();
-    }
-    else if("add" == string(argv[1])){
-        addCommand(argc, argv);
-    }
-    else if("commit" == string(argv[1])){
-        commitCommand(argc, argv);
-    }
-    else if("hash-object" == string(argv[1])){
-        hashObjectCommand(argc, argv);
-    }
-    else if("cat-file" == string(argv[1])){
-        catFileCommand(argc, argv);
-    }
-    else{
-        cerr << "Unknown command: " << argv[1] << endl;
-        return 1;
-    }
+    unordered_map<string, unique_ptr<Commands>> commands;
+    commands["init"] = make_unique<InitCommand>();
+    commands["add"] = make_unique<AddCommand>();
+    commands["commit"] = make_unique<CommitCommand>();
+    commands["hash-object"] = make_unique<HashObjectCommand>();
+    commands["cat-file"] = make_unique<CatFileCommand>();
 
-    return 0;
+    string command = argv[1];
+    auto it = commands.find(command);
+
+    if(it != commands.end()){
+        vector<string> args(argv + 2, argv + argc);
+        return it->second->execute(args);
+    }
+    
+    cerr << "Unknown command: " << argv[1] << endl;
+    return 1;
 }

@@ -1,3 +1,9 @@
 #pragma once
 
-void addCommand(int argc, char* argv[]);
+#include "commands.h"
+using namespace std;
+
+class AddCommand : public Commands {
+public:
+    int execute(const vector<string>& args) override;
+};

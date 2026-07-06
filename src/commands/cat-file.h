@@ -1,3 +1,9 @@
 #pragma once
 
-void catFileCommand(int argc, char* argv[]);
+#include "commands.h"
+using namespace std;
+
+class CatFileCommand : public Commands {
+public:
+    int execute(const vector<string>& args) override;
+};

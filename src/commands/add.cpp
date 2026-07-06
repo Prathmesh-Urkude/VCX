@@ -2,10 +2,11 @@
 #include "add.h"
 using namespace std;
 
-void addCommand(int argc, char* argv[]){
-    if(argc < 3){
+int AddCommand::execute(const vector<string>& args){
+    if(args.size() < 1){
         cerr << "usage: vcx add <file>" << endl;
-        return;
+        return 1;
     }
-    cout << "Added " << argv[2] << " to staging area" << endl;
+    cout << "Added " << args[0] << " to staging area" << endl;
+    return 0;
 }

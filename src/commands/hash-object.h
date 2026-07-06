@@ -1,3 +1,9 @@
 #pragma once
 
-void hashObjectCommand(int argc, char* argv[]);
+#include "commands.h"
+using namespace std;
+
+class HashObjectCommand : public Commands {
+public:
+    int execute(const vector<string>& args) override;
+};

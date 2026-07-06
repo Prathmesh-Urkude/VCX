@@ -3,25 +3,26 @@
 #include "hash-object.h"
 using namespace std;
 
-void hashObjectCommand(int argc, char* argv[]){
-    if(argc < 3) {
+int HashObjectCommand::execute(const vector<string>& args){
+    if(args.size() < 1) {
         cerr << "usage: vcx hash-object <file-path>" << endl;
-        return;
+        return 1;
     }
-    else if(argc == 3){
-        if("-w" == string(argv[2])){
+    else if(args.size() == 1){
+        if("-w" == string(args[0])){
             cerr << "usage: vcx hash-object -w <file-path>" << endl;
-            return;
+            return 1;
         }
         else {
-            cout << HashKey(string(argv[2]), false) << endl;
-            return;
+            cout << HashKey(string(args[0]), false) << endl;
+            return 0;
         }
     }
-    else if(argc == 4){
-        if("-w" == string(argv[2])){
-            cout << HashKey(string(argv[3]), true) << endl;
-            return;
+    else if(args.size() == 2){
+        if("-w" == string(args[0])){
+            cout << HashKey(string(args[1]), true) << endl;
+            return 0;
         }
     }
+    return 1;
 }

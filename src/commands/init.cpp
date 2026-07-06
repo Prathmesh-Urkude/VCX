@@ -1,11 +1,12 @@
 #include<bits/stdc++.h>
 using namespace std;
 #include "init.h"
+#include "commands.h"
 #include<filesystem>
-#include <fstream>
+#include<fstream>
 using namespace std::filesystem;
 
-void initCommand(){
+int InitCommand::execute(const vector<string>& args) {
     if(exists(".vcx")){
         cout << "vcx repository already exists in this directory." << endl;
         cout << "do you want to reinitialize the repository, (y/n)? : ";
@@ -13,10 +14,11 @@ void initCommand(){
         char choice;
         cin >> choice;
         choice = tolower(choice);
-        if('y' == choice) {
+        if('y' == choice){
             remove_all(".vcx");
             cout << "Removed existing vcx repository." << endl;
-        } else return;
+        } 
+        else return 0;
     }
 
     create_directory(".vcx");
@@ -34,6 +36,6 @@ void initCommand(){
     ofstream indexFile(".vcx/index", ios::binary);
     indexFile.close();
 
-
     cout << "Initialized empty vcx repository in ./.vcx/" << endl;
+    return 0;
 }

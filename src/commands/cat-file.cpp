@@ -3,14 +3,14 @@
 #include "cat-file.h"
 using namespace std;
 
-void catFileCommand(int argc, char* argv[]){
-    if(argc < 4){
+int CatFileCommand::execute(const vector<string>& args){
+    if(args.size() < 2){
         cerr << "usage : vcx cat-file [-e | -p | -t | -s] <object>" << endl;
-        return;
+        return 1;
     }
-    string hash = string(argv[3]);
-    string flag = string(argv[2]);
-    if(argc == 4 && !hash.empty()){
+    string flag = string(args[0]);
+    string hash = string(args[1]);
+    if(args.size() == 2 && !hash.empty()){
         if("-e" == flag){
             if(checkObjectExist(hash)){
                 cout << "true" << endl;
@@ -30,4 +30,8 @@ void catFileCommand(int argc, char* argv[]){
             cout << getObjectSize(payload) << endl;
         }
     }
+    else {
+        cerr << "Invalid hash object" << endl;
+    }
+    return 0;
 }

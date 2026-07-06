@@ -2,19 +2,20 @@
 #include "commit.h"
 using namespace std;
 
-void commitCommand(int argc, char *argv[])
+int CommitCommand::execute(const vector<string>& args)
 {
-    if (argc < 3){
+    if (args.size() < 1){
         cerr << "usage: vcx commit -m <message>" << endl;
-        return;
+        return 1;
     }
-    if (string(argv[2]) == "-m"){
-        if (argc < 4 ||string(argv[3]).empty()){
+    if (string(args[0]) == "-m"){
+        if (args.size() < 2 || string(args[1]).empty()){
             cerr << "Commit message cannot be empty" << endl;
-            return;
+            return 1;
         }
         else{
-            cout << "Committed with message: " << argv[3] << endl;
+            cout << "Committed with message: " << args[1] << endl;
         }
     }
+    return 0;
 }
