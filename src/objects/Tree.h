@@ -12,8 +12,10 @@ struct TreeEntry {
 class Tree : public Object {
 private:
     std::vector<TreeEntry> entries;
+    void deserialize(const std::string& serialized);
 public:
     explicit Tree(const std::vector<TreeEntry>& entries);
+    explicit Tree(const std::string& serialized);
     std::string getType() const override;
     std::string serialize() const override;
 };

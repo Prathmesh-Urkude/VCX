@@ -21,3 +21,13 @@ string Tree::serialize() const {
     }
     return res;
 }
+
+Tree::Tree(const std::vector<TreeEntry>& entries) : entries(entries) {}
+
+Tree::Tree(const std::string& serialized){
+    deserialize(serialized);
+}
+
+void Tree::deserialize(const string& serialized){
+
+}
