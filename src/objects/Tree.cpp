@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "Tree.h"
-#include "../utils/Hash.h"
+#include "objects/Tree.h"
+#include "utils/Hash.h"
 
 Tree::Tree(const std::vector<TreeEntry>& entries) : entries(entries) {}
 

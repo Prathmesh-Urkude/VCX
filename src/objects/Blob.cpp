@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "Blob.h"
+#include "objects/Blob.h"
 
 Blob::Blob(const std::string& data) : data(data) {}
 

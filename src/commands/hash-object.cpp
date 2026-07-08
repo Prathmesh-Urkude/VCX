@@ -1,6 +1,8 @@
 #include<bits/stdc++.h>
-#include "../components/hash-key.h"
-#include "hash-object.h"
+#include "commands/hash-object.h"
+#include "utils/FileUtils.h"
+#include "objects/Blob.h"
+#include "core/ObjectStore.h"
 using namespace std;
 
 int HashObjectCommand::execute(const vector<string>& args){
@@ -14,13 +16,18 @@ int HashObjectCommand::execute(const vector<string>& args){
             return 1;
         }
         else {
-            cout << HashKey(string(args[0]), false) << endl;
+            string filePath = args[0];
+            Blob blob(FileUtils::readFile(filePath));
+            cout << blob.getHash() << endl;
             return 0;
         }
     }
     else if(args.size() == 2){
         if("-w" == string(args[0])){
-            cout << HashKey(string(args[1]), true) << endl;
+            string filePath = args[1];
+            Blob blob(FileUtils::readFile(filePath));
+            ObjectStore store;
+            cout << store.write(blob) << endl;
             return 0;
         }
     }

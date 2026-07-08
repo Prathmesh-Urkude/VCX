@@ -1,13 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "ObjectStore.h"
-#include "../utils/Hash.h"
-#include "../utils/FileUtils.h"
+#include "core/ObjectStore.h"
+#include "utils/Hash.h"
+#include "utils/FileUtils.h"
 #include <zlib.h> //compile with "-lz"
 #include <filesystem>
-#include "../objects/Blob.h"
-#include "../objects/Commit.h"
-#include "../objects/Tree.h"
+#include "objects/Blob.h"
+#include "objects/Commit.h"
+#include "objects/Tree.h"
 
 string ObjectStore::objectPath(const std::string& hash) const {
     return ".vcx/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);

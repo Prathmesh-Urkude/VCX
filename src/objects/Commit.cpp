@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "Commit.h"
+#include "objects/Commit.h"
 
 string Commit::getType() const {
     return "commit";

@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "Object.h"
-#include "../utils/Hash.h"
+#include "objects/Object.h"
+#include "utils/Hash.h"
 
 string Object::getPayload() const {
     string payload = getType() + " " + to_string(serialize().size());

@@ -1,9 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "Hash.h"
-#include "FileUtils.h"
+#include "utils/Hash.h"
+#include "utils/FileUtils.h"
 #include<openssl/sha.h> //compile with "-lcrypto"
-// #include "../components/object-db.h"
 
 string Hash::sha256(const string& data){
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -25,31 +24,6 @@ string Hash::sha256(const string& data){
     return oss.str();
 }
 
-string Hash::HashKey(string file, bool write){
-    if(FileUtils::validPath(file)){
-        try{
-            string content = FileUtils::readFile(string(file));
-            string payload = getPayload("blob", content);
-            string shaKey = Hash::sha256(payload);
-
-            if(shaKey.empty()){
-                throw runtime_error("Failed to generate hash key");
-            }
-            if(write){
-                createObject(shaKey, payload);
-            }
-            return shaKey;
-        }
-        catch (const exception& e) {
-            cerr << string(file) << ": " << e.what() << '\n';
-        }
-    }
-    else {
-        cerr << "Invalid file\n";
-    }
-    return "";
-}
-
 bool Hash::isValid(const string& hash){
     if(hash.length() != 64) return false;
 
@@ -59,7 +33,7 @@ bool Hash::isValid(const string& hash){
     return true;
 }
 
-string hexToBytes(const std::string& hex){
+string Hash::hexToBytes(const std::string& hex){
     if(hex.length() % 2 != 0) throw invalid_argument("Hex string must have an even length");
 
     string res;
@@ -71,7 +45,7 @@ string hexToBytes(const std::string& hex){
     return res;
 }
 
-string bytesToHex(const std::string& bytes){
+string Hash::bytesToHex(const std::string& bytes){
     ostringstream ss;
     for (char c : bytes) {
         ss << hex << setw(2) << setfill('0') << static_cast<int>(static_cast<unsigned char>(c));

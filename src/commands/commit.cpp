@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "commit.h"
+#include "commands/commit.h"
 using namespace std;
 
 int CommitCommand::execute(const vector<string>& args)

@@ -1,12 +1,12 @@
 #include<bits/stdc++.h>
 using namespace std;
-#include "init.h"
-#include "commands.h"
+#include "commands/init.h"
+#include "commands/commands.h"
 #include<filesystem>
 #include<fstream>
 using namespace std::filesystem;
 
-int InitCommand::execute(const vector<string>& args) {
+int InitCommand::execute(const vector<string>&) {
     if(exists(".vcx")){
         cout << "vcx repository already exists in this directory." << endl;
         cout << "do you want to reinitialize the repository, (y/n)? : ";
