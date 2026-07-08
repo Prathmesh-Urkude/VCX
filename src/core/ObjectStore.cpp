@@ -9,15 +9,17 @@ using namespace std;
 #include "objects/Commit.h"
 #include "objects/Tree.h"
 
+ObjectStore::ObjectStore(const std::string& objectsPath) : objectsPath(objectsPath) {}
+
 string ObjectStore::objectPath(const std::string& hash) const {
-    return ".vcx/objects/" + hash.substr(0, 2) + "/" + hash.substr(2);
+    return objectsPath + "/" + hash.substr(0, 2) + "/" + hash.substr(2);
 }
 
 string ObjectStore::write(const Object& object){
     string shaKey = object.getHash();
     string payload = object.getPayload();
 
-    string dir = ".vcx/objects/" + shaKey.substr(0, 2);
+    string dir = objectsPath + "/" + shaKey.substr(0, 2);
     filesystem::create_directories(dir);
 
     string compressedData = compress(payload);
@@ -68,7 +70,7 @@ unique_ptr<Object> ObjectStore::read(const string& hash){
 bool ObjectStore::exists(const string& hash){
     if(!Hash::isValid(hash)) return false;
     string filePath = ObjectStore::objectPath(hash);
-    return FileUtils::validPath(filePath);
+    return FileUtils::validFilePath(filePath);
 }
 
 void ObjectStore::remove(const string& hash){

@@ -4,7 +4,7 @@ using namespace std;
 #include<filesystem>
 using namespace std::filesystem;
 
-bool FileUtils::validPath(const string& filePath){
+bool FileUtils::validFilePath(const string& filePath){
     path p(filePath);
     return exists(p) && is_regular_file(p);
 }

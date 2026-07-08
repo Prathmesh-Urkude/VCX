@@ -5,9 +5,12 @@ using namespace std;
 #include<filesystem>
 #include<fstream>
 using namespace std::filesystem;
+#include "core/Repository.h"
 
 int InitCommand::execute(const vector<string>&) {
-    if(exists(".vcx")){
+    Repository repo(".");
+
+    if(repo.exists()){
         cout << "vcx repository already exists in this directory." << endl;
         cout << "do you want to reinitialize the repository, (y/n)? : ";
 
@@ -15,27 +18,14 @@ int InitCommand::execute(const vector<string>&) {
         cin >> choice;
         choice = tolower(choice);
         if('y' == choice){
-            remove_all(".vcx");
+            repo.remove();
             cout << "Removed existing vcx repository." << endl;
         } 
         else return 0;
     }
 
-    create_directory(".vcx");
-    create_directory(".vcx/objects");
-    create_directories(".vcx/refs/heads/");
-    create_directories(".vcx/refs/tags/");
+    repo.init();
 
-    ofstream head(".vcx/HEAD");
-    head << "ref: refs/heads/main\n";
-    head.close();
-
-    ofstream main_branch(".vcx/refs/heads/main");
-    main_branch.close();
-
-    ofstream indexFile(".vcx/index", ios::binary);
-    indexFile.close();
-
-    cout << "Initialized empty vcx repository in ./.vcx/" << endl;
+    cout << "Initialized empty .vcx repository" << endl;
     return 0;
 }

@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 #include "commands/cat-file.h"
-#include "core/ObjectStore.h"
+#include "core/Repository.h"
 using namespace std;
 
 int CatFileCommand::execute(const vector<string>& args){
@@ -12,13 +12,13 @@ int CatFileCommand::execute(const vector<string>& args){
     string flag = string(args[0]);
     string hash = string(args[1]);
 
-    ObjectStore store;
+    Repository repo;
     if("-e" == flag){
-        cout << boolalpha << store.exists(hash) << '\n';
+        cout << boolalpha << repo.objectExists(hash) << '\n';
         return 0;
     }
 
-    auto object = store.read(hash);
+    auto object = repo.readObject(hash);
     if("-p" == flag){
         cout << object->serialize() << endl;
     }

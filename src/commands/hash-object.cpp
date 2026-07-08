@@ -1,8 +1,7 @@
 #include<bits/stdc++.h>
 #include "commands/hash-object.h"
 #include "utils/FileUtils.h"
-#include "objects/Blob.h"
-#include "core/ObjectStore.h"
+#include "core/Repository.h"
 using namespace std;
 
 int HashObjectCommand::execute(const vector<string>& args){
@@ -17,17 +16,16 @@ int HashObjectCommand::execute(const vector<string>& args){
         }
         else {
             string filePath = args[0];
-            Blob blob(FileUtils::readFile(filePath));
-            cout << blob.getHash() << endl;
+            Repository repo;
+            cout << repo.hashObject(filePath, false) << endl;
             return 0;
         }
     }
     else if(args.size() == 2){
         if("-w" == string(args[0])){
             string filePath = args[1];
-            Blob blob(FileUtils::readFile(filePath));
-            ObjectStore store;
-            cout << store.write(blob) << endl;
+            Repository repo;
+            cout << repo.hashObject(filePath, true) << endl;
             return 0;
         }
     }
