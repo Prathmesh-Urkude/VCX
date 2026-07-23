@@ -6,6 +6,7 @@ using namespace std::filesystem;
 #include "objects/Blob.h"
 #include "core/ObjectStore.h"
 #include "utils/FileUtils.h"
+#include "core/Index.h"
 
 Repository::Repository(const string& root) : 
     rootPath(root), 
@@ -42,6 +43,7 @@ bool Repository::isInitialized() const {
         && filesystem::exists(vcxPath + "/HEAD") && filesystem::exists(vcxPath + "/index");
 }
 
+//Objects
 string Repository::hashObject(const string& path, bool write){
     Blob blob(FileUtils::readFile(path));
     if(write) writeObject(blob);
@@ -60,4 +62,27 @@ void Repository::writeObject(const Object& object){
 
 bool Repository::objectExists(const string& hash){
     return objectStore.exists(hash);
+}
+
+// Index 
+Index Repository::loadIndex() const{
+    Index index;
+    index.load();
+    return index;
+}
+
+void Repository::saveIndex(Index& index) const{
+    index.Index::save();
+}
+
+vector<string> Repository::fileList(const string& path) const{
+    vector<string> files;
+
+    for(const auto& entry : recursive_directory_iterator(path, directory_options::skip_permission_denied)){
+        if(!entry.is_regular_file()) continue;
+        if(entry.path().string().find(".vcx") != string::npos) continue;
+
+        files.push_back(relative(entry.path(), rootPath).string());
+    }
+    return files;
 }
