@@ -39,3 +39,8 @@ uint64_t FileUtils::lastModified(const std::string& path){
         std::chrono::system_clock::to_time_t(sctp)
     );
 }
+
+//WIP
+string FileUtils::fileMode(const string& path){
+    return "100644"; //normal file
+}

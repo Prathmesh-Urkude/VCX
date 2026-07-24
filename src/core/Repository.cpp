@@ -44,10 +44,14 @@ bool Repository::isInitialized() const {
 }
 
 //Objects
-string Repository::hashObject(const string& path, bool write){
+string Repository::hashFile(const string& path, bool write) {
     Blob blob(FileUtils::readFile(path));
-    if(write) writeObject(blob);
-    return blob.getHash();
+    return hashObject(blob, write);
+}
+
+string Repository::hashObject(const Object& object, bool write){
+    if(write) writeObject(object);
+    return object.getHash();
 }
 
 unique_ptr<Object> Repository::readObject(const string& hash){

@@ -17,7 +17,7 @@ int HashObjectCommand::execute(const vector<string>& args){
         else {
             string filePath = args[0];
             Repository repo;
-            cout << repo.hashObject(filePath, false) << endl;
+            cout << repo.hashFile(filePath, false) << endl;
             return 0;
         }
     }
@@ -25,7 +25,7 @@ int HashObjectCommand::execute(const vector<string>& args){
         if("-w" == string(args[0])){
             string filePath = args[1];
             Repository repo;
-            cout << repo.hashObject(filePath, true) << endl;
+            cout << repo.hashFile(filePath, true) << endl;
             return 0;
         }
     }

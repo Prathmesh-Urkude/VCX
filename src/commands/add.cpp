@@ -32,7 +32,8 @@ int AddCommand::execute(const vector<string>& args){
 void AddCommand::stageFile(Index& index, const string& path, Repository& repo){
     IndexEntry entry;
     entry.filePath = path;
-    entry.blobhash = repo.hashObject(path, true);
+    entry.blobhash = repo.hashFile(path, true);
+    entry.mode = FileUtils::fileMode(path);
     entry.size = FileUtils::fileSize(path);
     entry.timestamp = FileUtils::lastModified(path);
 

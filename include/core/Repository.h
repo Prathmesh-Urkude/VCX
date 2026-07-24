@@ -17,7 +17,8 @@ public:
     void init();
     bool isInitialized() const;
 
-    std::string hashObject(const std::string& path, bool write = true);
+    std::string hashFile(const std::string& path, bool write);
+    std::string hashObject(const Object& object, bool write = true);
     unique_ptr<Object> readObject(const std::string& hash);
     void writeObject(const Object& object);
     bool objectExists(const std::string& hash);

@@ -32,6 +32,9 @@ void Index::load(){
         string hash(blobLength, '\0');
         in.read(hash.data(), blobLength);
 
+        string mode(6, '\0');
+        in.read(mode.data(), 6);
+        
         uint64_t size;
         uint64_t timestamp;
         in.read(reinterpret_cast<char*>(&size), sizeof(size));
@@ -40,6 +43,7 @@ void Index::load(){
         IndexEntry entry;
         entry.filePath = move(path);
         entry.blobhash = move(hash);
+        entry.mode = move(mode);
         entry.size = move(size);
         entry.timestamp = move(timestamp);
 
@@ -56,6 +60,10 @@ void Index::save(){
     header.numEntries = entries.size();
     out.write(reinterpret_cast<char*>(&header), sizeof(header));
 
+    sort(entries.begin(), entries.end(), [](const IndexEntry& a, const IndexEntry& b){
+        return a.filePath < b.filePath;
+    });
+
     for(const auto& e : entries){
         uint32_t fileLength = e.filePath.size();
         out.write(reinterpret_cast<char*>(&fileLength), sizeof(fileLength));
@@ -65,6 +73,7 @@ void Index::save(){
         out.write(reinterpret_cast<char*>(&blobLength), sizeof(blobLength));
         out.write(e.blobhash.data(), blobLength);
 
+        out.write(e.mode.data(), 6);
         out.write(reinterpret_cast<const char*>(&e.size), sizeof(e.size));
         out.write(reinterpret_cast<const char*>(&e.timestamp), sizeof(e.timestamp));
     }

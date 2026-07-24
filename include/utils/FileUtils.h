@@ -9,4 +9,5 @@ namespace FileUtils {
 
     uint64_t fileSize(const std::string& path);
     uint64_t lastModified(const std::string& path);
+    std::string fileMode(const std::string& path);
 }

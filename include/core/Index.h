@@ -13,7 +13,7 @@ struct IndexHeader {
 struct IndexEntry {
     std::string filePath;
     std::string blobhash;
-//  std::string mode;
+    std::string mode;
     uint64_t size;
     uint64_t timestamp;
 };
