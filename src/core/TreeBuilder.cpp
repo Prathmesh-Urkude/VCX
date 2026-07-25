@@ -9,44 +9,47 @@ TreeBuilder::TreeBuilder(Repository& repo) : repo(repo) {}
 
 string TreeBuilder::build(){
     Index index = repo.loadIndex();
-    vector<IndexEntry> entries = index.getEntries();
-    return buildNode("", entries);
+    const vector<IndexEntry>& entries = index.getEntries();
+
+    auto it = entries.begin();
+    return buildNode("", it, entries.end());
 }
 
-string TreeBuilder::buildNode(const string& currentPath, const vector<IndexEntry>& entries){
+string TreeBuilder::buildNode(const string& currentPath, vector<IndexEntry>::const_iterator& it, const vector<IndexEntry>::const_iterator end){
     vector<TreeEntry> treeEntries;
     set<string> subdirs;
 
-    for(const auto& entry : entries){
-        string relativePath = entry.filePath;
-        if(!currentPath.empty()){
-            if(entry.filePath.rfind(currentPath + "/", 0) != 0) continue;
-            relativePath = entry.filePath.substr(currentPath.size() + 1);
-        }
+    while(it != end){
+        if(!belongsToCurrentDir(it->filePath, currentPath)) break;
+
+        string relativePath = currentPath.empty() ? it->filePath : it->filePath.substr(currentPath.size() + 1);
 
         size_t slash = relativePath.find('/');
         if(slash != string::npos){
-            string subD = relativePath.substr(0, slash);
-
-            if (!subdirs.insert(subD).second) continue;
-
-            string childPath = currentPath.empty() ? subD : currentPath + "/" + subD;
+            string dir = relativePath.substr(0, slash);
+            string childDir = currentPath.empty() ? dir : currentPath + "/" + dir;
             treeEntries.push_back({
                 "040000",
-                subD,
-                buildNode(childPath, entries)
+                dir,
+                buildNode(childDir, it, end)
             });
         }
         else {
             treeEntries.push_back({
-                entry.mode,
+                it->mode,
                 relativePath,
-                entry.blobhash
+                it->blobhash
             });
-        }
+
+            ++it;
+        } 
     }
 
     Tree tree(treeEntries);
-    
     return repo.hashObject(tree, true);
+}
+
+bool TreeBuilder::belongsToCurrentDir(const string& currentPath, const string& path) const {
+    if(currentPath.empty()) return true;
+    return path.rfind(currentPath + "/", 0) == 0;
 }
