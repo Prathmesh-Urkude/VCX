@@ -44,12 +44,12 @@ void Tree::deserialize(const string& serialized){
         entry.name = serialized.substr(i, nullPos - i);
 
         i = nullPos + 1;
-        if(i + 20 > serialized.size()) throw std::runtime_error("Corrupted tree object");
+        if(i + Hash::HASH_SIZE > serialized.size()) throw std::runtime_error("Corrupted tree object");
 
-        entry.hash = Hash::bytesToHex(serialized.substr(i, 20));
+        entry.hash = Hash::bytesToHex(serialized.substr(i, Hash::HASH_SIZE));
 
         entries.push_back(entry);
-        i += 20;
+        i += Hash::HASH_SIZE;
     }
 }
 

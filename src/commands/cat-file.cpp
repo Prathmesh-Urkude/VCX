@@ -1,6 +1,7 @@
 #include<bits/stdc++.h>
 #include "commands/cat-file.h"
 #include "core/Repository.h"
+#include "objects/Tree.h"
 using namespace std;
 
 int CatFileCommand::execute(const vector<string>& args){
@@ -20,7 +21,18 @@ int CatFileCommand::execute(const vector<string>& args){
 
     auto object = repo.readObject(hash);
     if("-p" == flag){
-        cout << object->serialize() << endl;
+        if (object->getType() == "tree") {
+            auto* tree = dynamic_cast<Tree*>(object.get());
+
+            for (const auto& entry : tree->getEntries()) {
+                cout << entry.mode << " "
+                    << entry.name << " "
+                    << entry.hash << '\n';
+            }
+        }
+        else {
+            cout << object->serialize() << endl;
+        }
     }
     else if("-t" == flag){
         cout << object->getType() << endl;
