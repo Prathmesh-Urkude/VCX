@@ -17,11 +17,10 @@ string TreeBuilder::build(){
 
 string TreeBuilder::buildNode(const string& currentPath, vector<IndexEntry>::const_iterator& it, const vector<IndexEntry>::const_iterator end){
     vector<TreeEntry> treeEntries;
-    set<string> subdirs;
 
     while(it != end){
-        if(!belongsToCurrentDir(it->filePath, currentPath)) break;
-
+        if(!belongsToCurrentDir(currentPath, it->filePath)) break;
+        
         string relativePath = currentPath.empty() ? it->filePath : it->filePath.substr(currentPath.size() + 1);
 
         size_t slash = relativePath.find('/');
@@ -49,7 +48,7 @@ string TreeBuilder::buildNode(const string& currentPath, vector<IndexEntry>::con
     return repo.hashObject(tree, true);
 }
 
-bool TreeBuilder::belongsToCurrentDir(const string& currentPath, const string& path) const {
-    if(currentPath.empty()) return true;
-    return path.rfind(currentPath + "/", 0) == 0;
+bool TreeBuilder::belongsToCurrentDir(const string& currentDir, const string& path) const {
+    if(currentDir.empty()) return true;
+    return path.rfind(currentDir + "/", 0) == 0;
 }

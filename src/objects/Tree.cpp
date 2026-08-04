@@ -52,3 +52,7 @@ void Tree::deserialize(const string& serialized){
         i += 20;
     }
 }
+
+vector<TreeEntry> Tree::getEntries() const {
+    return entries;
+}

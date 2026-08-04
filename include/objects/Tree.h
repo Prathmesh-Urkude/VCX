@@ -18,4 +18,5 @@ public:
     explicit Tree(const std::string& serialized);
     std::string getType() const override;
     std::string serialize() const override;
+    std::vector<TreeEntry> getEntries() const;
 };

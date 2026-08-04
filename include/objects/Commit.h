@@ -26,4 +26,10 @@ public:
 
     std::string getType() const override;
     std::string serialize() const override;
+
+    std::string getTreeHash() {return treeHash;}
+    std::vector<std::string> getParentHash() {return parentHash;}
+    std::string getMessage() {return message;}
+    uint64_t getTimestamp() {return timestamp;}
+    std::string getTimezone() {return timezone;}
 };
