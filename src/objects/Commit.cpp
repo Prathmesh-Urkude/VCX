@@ -31,7 +31,7 @@ Commit::Commit(const string& treeHash, const vector<string>& parentHash, const s
     this->committerEmail = committerEmail;
     this->message = message;
     this->timestamp = static_cast<uint64_t>(time(nullptr));
-    this->timezone = "+0530"; // Default Indian timezone
+    this->timezone = "0530"; // Default Indian timezone
 }
 
 Commit::Commit(const std::string& serialized){

@@ -5,6 +5,7 @@
 #include "commands/hash-object.h"
 #include "commands/cat-file.h"
 #include "commands/commands.h"
+#include "commands/log.h"
 using namespace std;
 
 int main(int argc, char* argv[]){
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]){
     commands["commit"] = make_unique<CommitCommand>();
     commands["hash-object"] = make_unique<HashObjectCommand>();
     commands["cat-file"] = make_unique<CatFileCommand>();
+    commands["log"] = make_unique<LogCommand>();
 
     string command = argv[1];
     auto it = commands.find(command);

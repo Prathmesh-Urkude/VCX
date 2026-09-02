@@ -32,4 +32,8 @@ public:
     std::string getMessage() {return message;}
     uint64_t getTimestamp() {return timestamp;}
     std::string getTimezone() {return timezone;}
+    std::string getAuthor() {return authorName;}
+    std::string getAuthorEmail() {return authorEmail;}
+    std::string getCommitter() {return committerName;}
+    std::string getCommitterEmail() {return committerEmail;}
 };

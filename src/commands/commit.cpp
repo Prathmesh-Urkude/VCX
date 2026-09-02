@@ -5,8 +5,7 @@ using namespace std;
 #include "core/TreeBuilder.h"
 #include "objects/Commit.h"
 
-int CommitCommand::execute(const vector<string>& args)
-{
+int CommitCommand::execute(const vector<string>& args){
     if (args.size() < 1){
         cerr << "usage: vcx commit -m <message>" << endl;
         return 1;
